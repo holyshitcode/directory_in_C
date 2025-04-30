@@ -31,7 +31,7 @@ struct Directory {
 };
 
 struct Main_Screen {
-    struct File files[MAIN_SCREEN_FILE_MAX];
+    struct File *files[MAIN_SCREEN_FILE_MAX];
     struct Directory dirs[MAIN_SCREEN_DIR_MAX];
     int file_count;
     int dir_count;
@@ -64,18 +64,15 @@ int make_dir_to_screen(struct Main_Screen *screen, char *dir_name) {
  *  if it success return 0
  */
 int make_file_to_screen(struct Main_Screen *screen, char *file_name, char *contents) {
-    if(max_usage <= 0) {
-        return -1;
-    }
-    struct File file;
-    strcpy(file.name, file_name);
-    strcpy(file.contents, contents);
-    char *current_time = get_current_time();
-    strcpy(file.createTime, current_time);
-    int file_position = screen->file_count;
-    screen->files[file_position] = file;
-    screen->file_count++;
-    max_usage -=  FILE_USAGE * strlen(file.contents);
+    if(max_usage <= 0) return -1;
+
+    struct File *file = malloc(sizeof(struct File)); // 🔁 힙에 메모리 확보
+    strcpy(file->name, file_name);
+    strcpy(file->contents, contents);
+    strcpy(file->createTime, get_current_time());
+
+    screen->files[screen->file_count++] = file;
+    max_usage -= FILE_USAGE * strlen(file->contents);
     return 0;
 }
 
@@ -103,7 +100,7 @@ int get_dir_from_screen(struct Main_Screen *screen, char *dir_name) {
 int get_file_from_screen(struct Main_Screen *screen, char *file_name) {
     int file_limit = screen->file_count;
     for(int i = 0; i < file_limit; i++) {
-        if(strcmp(screen->files[i].name, file_name) == 0) {
+        if(strcmp(screen->files[i]->name, file_name) == 0) {
             return i;
         }
     }
@@ -127,7 +124,7 @@ int move_file_to_dir(struct Main_Screen *screen, char *dir_name, char *file_name
         return -1;
     }
 
-    target_dir->files[target_dir->file_count] = &screen->files[target_file_position];
+    target_dir->files[target_dir->file_count] = screen->files[target_file_position];
     target_dir->file_count++;
 
     for (int i = target_file_position; i < screen->file_count - 1; i++) {
@@ -167,10 +164,11 @@ void display_screen(struct Main_Screen *screen) {
 
     printf("\n[Files on Main Screen - %d]:\n", screen->file_count);
     for (int i = 0; i < screen->file_count; i++) {
+        struct File *f = screen->files[i];
         printf("📄 %s | Size: %lu | Created: %s\n",
-            screen->files[i].name,
-            strlen(screen->files[i].contents),
-            screen->files[i].createTime);
+            f->name,
+            strlen(f->contents),
+            f->createTime);
     }
     printf("----------------------\n\n");
 }
