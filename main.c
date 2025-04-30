@@ -66,7 +66,7 @@ int make_dir_to_screen(struct Main_Screen *screen, char *dir_name) {
 int make_file_to_screen(struct Main_Screen *screen, char *file_name, char *contents) {
     if(max_usage <= 0) return -1;
 
-    struct File *file = malloc(sizeof(struct File)); // 🔁 힙에 메모리 확보
+    struct File *file = malloc(sizeof(struct File));
     strcpy(file->name, file_name);
     strcpy(file->contents, contents);
     strcpy(file->createTime, get_current_time());
@@ -177,19 +177,19 @@ void display_screen(struct Main_Screen *screen) {
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
 
-    // 디렉터리 생성
+    // directory
     make_dir_to_screen(&main_screen, "Documents");
     make_dir_to_screen(&main_screen, "Images");
 
-    // 파일 생성
+    // file
     make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
     make_file_to_screen(&main_screen, "image.jpg", "FAKE_IMAGE_DATA");
     make_file_to_screen(&main_screen, "notes.txt", "Important notes here.");
 
-    // 파일 이동
+    // file move
     move_file_to_dir(&main_screen, "Documents", "hello.txt");
     move_file_to_dir(&main_screen, "Images", "image.jpg");
 
-    // 출력
+    // print
     display_screen(&main_screen);
 }
