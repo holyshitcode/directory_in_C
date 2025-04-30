@@ -26,7 +26,7 @@ struct File {
 
 struct Directory {
     char name[NAME_SIZE_MAX];
-    char *files[DIR_MAX_FILE];
+    struct File *files[DIR_MAX_FILE];
     int file_count;
 };
 
@@ -79,6 +79,64 @@ int make_file_to_screen(struct Main_Screen *screen, char *file_name, char *conte
     return 0;
 }
 
+/*
+ *  find directory from target screen by directory name
+ *  and return target_directory position
+ *  nothing return -1
+ */
+int get_dir_from_screen(struct Main_Screen *screen, char *dir_name) {
+    int dir_limit = screen->dir_count;
+
+    for(int i = 0; i < dir_limit; i++) {
+        if(strcmp(screen->dirs[i].name, dir_name) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/*
+ * find file from target screen by file name
+ * and return file_position
+ * nothing return -1
+ */
+int get_file_from_screen(struct Main_Screen *screen, char *file_name) {
+    int file_limit = screen->file_count;
+    for(int i = 0; i < file_limit; i++) {
+        if(strcmp(screen->files[i].name, file_name) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/*
+ *  find directory and file by name
+ *  and move file from screen to target directory and sort
+ *  if success return 0
+ */
+int move_file_to_dir(struct Main_Screen *screen, char *dir_name, char *file_name) {
+    int target_dir_position = get_dir_from_screen(screen, dir_name);
+    int target_file_position = get_file_from_screen(screen, file_name);
+    if (target_dir_position == -1 || target_file_position == -1) {
+        return -1;
+    }
+
+    struct Directory *target_dir = &screen->dirs[target_dir_position];
+    if (target_dir->file_count >= DIR_MAX_FILE) {
+        return -1;
+    }
+
+    target_dir->files[target_dir->file_count] = &screen->files[target_file_position];
+    target_dir->file_count++;
+
+    for (int i = target_file_position; i < screen->file_count - 1; i++) {
+        screen->files[i] = screen->files[i + 1];
+    }
+    screen->file_count--;
+
+    return 0;
+}
 
 /**
  *Usage
@@ -99,12 +157,17 @@ void display_screen(struct Main_Screen *screen) {
 
     printf("\n[Directories - %d]:\n", screen->dir_count);
     for (int i = 0; i < screen->dir_count; i++) {
-        printf("  - %s (files: %d)\n", screen->dirs[i].name, screen->dirs[i].file_count);
+        struct Directory *dir = &screen->dirs[i];
+        printf("📁 %s (files: %d)\n", dir->name, dir->file_count);
+        for (int j = 0; j < dir->file_count; j++) {
+            struct File *f = dir->files[j];
+            printf("    └── 📄 %s | Size: %lu | Created: %s\n", f->name, strlen(f->contents), f->createTime);
+        }
     }
 
-    printf("\n[Files - %d]:\n", screen->file_count);
+    printf("\n[Files on Main Screen - %d]:\n", screen->file_count);
     for (int i = 0; i < screen->file_count; i++) {
-        printf("  - %s | Size: %lu | Created: %s\n",
+        printf("📄 %s | Size: %lu | Created: %s\n",
             screen->files[i].name,
             strlen(screen->files[i].contents),
             screen->files[i].createTime);
@@ -116,11 +179,19 @@ void display_screen(struct Main_Screen *screen) {
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
 
+    // 디렉터리 생성
     make_dir_to_screen(&main_screen, "Documents");
     make_dir_to_screen(&main_screen, "Images");
 
+    // 파일 생성
     make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
     make_file_to_screen(&main_screen, "image.jpg", "FAKE_IMAGE_DATA");
+    make_file_to_screen(&main_screen, "notes.txt", "Important notes here.");
 
+    // 파일 이동
+    move_file_to_dir(&main_screen, "Documents", "hello.txt");
+    move_file_to_dir(&main_screen, "Images", "image.jpg");
+
+    // 출력
     display_screen(&main_screen);
 }
