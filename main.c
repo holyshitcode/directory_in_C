@@ -133,6 +133,9 @@ int move_file_to_dir(struct Main_Screen *screen, char *dir_name, char *file_name
         screen->files[i] = screen->files[i + 1];
     }
     screen->file_count--;
+    if (screen->file_count == 0) {
+        screen->files[screen->file_count] = NULL;
+    }
 
     return 0;
 }
@@ -192,11 +195,9 @@ void print_file_content(struct File *file) {
  * or return NULL
  */
 struct File *get_file_from_dir(struct Directory *dir, char *file_name) {
-    struct Directory target_dir = *dir;
-    int dir_file_limit = target_dir.file_count;
-    for(int i = 0; i < dir_file_limit; i++) {
-        if(strcmp(target_dir.files[i]->name, file_name) == 0) {
-            return target_dir.files[i];
+    for (int i = 0; i < dir->file_count; i++) {
+        if (strcmp(dir->files[i]->name, file_name) == 0) {
+            return dir->files[i];
         }
     }
     return NULL;
@@ -208,19 +209,79 @@ struct File *get_file_from_dir(struct Directory *dir, char *file_name) {
  * or return NULL
  */
 struct Directory *get_dir_from_screen_by_filename(struct Main_Screen *screen, char *file_name) {
-    struct Main_Screen target_screen = *screen;
-    int dir_limit = target_screen.dir_count;
-    for(int i = 0; i < dir_limit; i++) {
-        struct Directory *current_dir = &target_screen.dirs[i];
-        int current_dir_file_limit = current_dir->file_count;
-        for(int j = 0; j < current_dir_file_limit; j++) {
-            if(strcmp(current_dir->files[j]->name, file_name) == 0) {
+    for (int i = 0; i < screen->dir_count; i++) {
+        struct Directory *current_dir = &screen->dirs[i];
+        for (int j = 0; j < current_dir->file_count; j++) {
+            if (strcmp(current_dir->files[j]->name, file_name) == 0) {
                 return current_dir;
             }
         }
     }
     return NULL;
+}
 
+int get_file_position_from_directory(struct Directory *dir, char *file_name) {
+    for(int i = 0; i < dir->file_count; i++) {
+        if(strcmp(dir->files[i]->name, file_name) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/*
+ * it is called by remove_file_from_screen
+ * running exactly the same
+ */
+int remove_file_from_screen_directory(struct Directory *target_dir, char *file_name) {
+    if (target_dir == NULL) {
+        return -1;
+    }
+    int target_dir_file_limit = target_dir->file_count;
+    int remove_file_position = get_file_position_from_directory(target_dir, file_name);
+    if (remove_file_position == -1) {
+        return -1;
+    }
+    char *remove_file_contents = target_dir->files[remove_file_position]->contents;
+    max_usage += strlen(remove_file_contents);
+    free(target_dir->files[remove_file_position]);
+    for (int i = remove_file_position; i < target_dir_file_limit; i++) {
+        target_dir->files[i] = target_dir->files[i + 1];
+    }
+    target_dir->file_count--;
+    if (target_dir->file_count == 0) {
+        target_dir->files[target_dir->file_count] = NULL;
+    }
+    return 0;
+}
+
+/*
+ * remove from the screen if it exists in screen then
+ * remove it from this function
+ * or call remove_file_from_screen_directory
+ */
+int remove_file_from_screen(struct Main_Screen *screen, char *file_name) {
+    int remove_file_position = get_file_from_screen(screen, file_name);
+    struct Directory *target_dir = get_dir_from_screen_by_filename(screen, file_name);
+    if (remove_file_position == -1) {
+       if(remove_file_from_screen_directory(target_dir, file_name) == 0) {
+           return 0;
+       }
+        return -1;
+    }
+    char *remove_file_content = screen->files[remove_file_position]->contents;
+    max_usage +=  strlen(remove_file_content);
+    int file_limit = screen->file_count - 1;
+    struct File *file = screen->files[remove_file_position];
+    free(file);
+    screen->file_count--;
+    for(int i = remove_file_position; i < file_limit; i++) {
+        screen->files[i] = screen->files[i + 1];
+    }
+    if(screen->file_count == 0) {
+        screen->files[0] = NULL;
+    }
+    return 0;
 }
 
 /*
@@ -346,6 +407,14 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
 
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
+    make_dir_to_screen(&main_screen, "Documents");
+    make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
+    make_file_to_screen(&main_screen, "hello.txt2", "Hello World!");
+    move_file_to_dir(&main_screen, "Documents", "hello.txt2");
+    remove_file_from_screen(&main_screen, "hello.txt");
+    make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
+    move_file_to_dir(&main_screen, "Documents", "hello.txt");
+    remove_file_from_screen(&main_screen, "hello.txt");
     while(1) {
         char command[100];
         printf("> ");
