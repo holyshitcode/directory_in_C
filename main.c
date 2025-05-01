@@ -68,7 +68,9 @@ int make_file_to_screen(struct Main_Screen *screen, char *file_name, char *conte
 
     struct File *file = malloc(sizeof(struct File));
     strcpy(file->name, file_name);
-    strcpy(file->contents, contents);
+    if(contents != NULL) {
+        strcpy(file->contents, contents);
+    }
     strcpy(file->createTime, get_current_time());
 
     screen->files[screen->file_count++] = file;
@@ -263,7 +265,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     /*
      * mkdir dir_name
      */
-    if(strcmp(cmd, "mkdir")) {
+    if(strcmp(cmd, "mkdir") == 0) {
         if(arg != NULL) {
             make_dir_to_screen(screen,arg);
         }else {
@@ -274,7 +276,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     /*
      * touch file_name
      */
-    if(strcmp(cmd, "touch")) {
+    if(strcmp(cmd, "touch") == 0) {
         if(arg != NULL) {
             make_file_to_screen(screen,arg,NULL);
         }else {
@@ -285,9 +287,10 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      * vim file_name
      * vim dir_name file_name
      */
-    if(strcmp(cmd, "vim")) {
+    if(strcmp(cmd, "vim") == 0) {
         if(arg != NULL && target != NULL) {
-            char *contents =NULL;
+            char contents[FILE_SIZE_MAX];
+            printf("Please write contents:");
             fgets(contents,FILE_SIZE_MAX,stdin);
             int target_dir_position  = get_dir_from_screen(screen, arg );
             struct Directory *target_dir = &screen->dirs[target_dir_position];
@@ -295,7 +298,8 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
             write_file_contents(file,contents);
         }
         if(arg!= NULL && target == NULL) {
-            char *contents =NULL;
+            char contents[FILE_SIZE_MAX] ;
+            printf("Please write contents:");
             fgets(contents,FILE_SIZE_MAX,stdin);
             int screen_file_position = get_file_from_screen(screen,arg);
             struct File *file = screen->files[screen_file_position];
@@ -305,7 +309,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     /*
      *  mv file_name to_dir_name
      */
-    if(strcmp(cmd, "mv")) {
+    if(strcmp(cmd, "mv") == 0) {
         if(arg!=NULL && target != NULL) {
             move_file_to_dir(screen,target,arg);
         }
@@ -315,15 +319,15 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      *  ls
      *  only one arg
      */
-    if(strcmp(cmd,"ls")) {
-        if(arg!=NULL && target != NULL) {
+    if(strcmp(cmd,"ls") == 0) {
+        if(arg == NULL && target == NULL) {
             display_screen(screen);
         }
     }
     /*
      * cat file_name
      */
-    if(strcmp(cmd,"cat")) {
+    if(strcmp(cmd,"cat") == 0) {
         if(arg!=NULL && target == NULL) {
             int file_position = get_file_from_screen(screen,arg);
             struct File *file = screen->files[file_position];
@@ -331,7 +335,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
         }
     }
 
-    if(strcmp(cmd,"exit")) {
+    if(strcmp(cmd,"exit") == 0) {
         if(arg == NULL && target == NULL) {
             printf("Good Bye");
             exit(0);
@@ -342,25 +346,32 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
 
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
-
-    // directory
-    make_dir_to_screen(&main_screen, "Documents");
-    make_dir_to_screen(&main_screen, "Images");
-
-    // file
-    make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
-    make_file_to_screen(&main_screen, "image.jpg", "FAKE_IMAGE_DATA");
-    make_file_to_screen(&main_screen, "notes.txt", "Important notes here.");
-
-    // file move
-    move_file_to_dir(&main_screen, "Documents", "hello.txt");
-    move_file_to_dir(&main_screen, "Images", "image.jpg");
-
-    // print
-    display_screen(&main_screen);
-    int dir_position = get_dir_from_screen(&main_screen,"Documents");
-    //read file
-    read_file(&main_screen,&main_screen.dirs[dir_position],"hello.txt");
-    read_file(&main_screen,NULL,"image.jpg");
-    read_file(&main_screen,NULL,"notes.txt");
+    while(1) {
+        char command[100];
+        printf("> ");
+        fflush(stdout);
+        fgets(command, 100, stdin);
+        command[strlen(command) - 1] = '\0';
+        execute_by_command(command, &main_screen);
+    }
+    // // directory
+    // make_dir_to_screen(&main_screen, "Documents");
+    // make_dir_to_screen(&main_screen, "Images");
+    //
+    // // file
+    // make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
+    // make_file_to_screen(&main_screen, "image.jpg", "FAKE_IMAGE_DATA");
+    // make_file_to_screen(&main_screen, "notes.txt", "Important notes here.");
+    //
+    // // file move
+    // move_file_to_dir(&main_screen, "Documents", "hello.txt");
+    // move_file_to_dir(&main_screen, "Images", "image.jpg");
+    //
+    // // print
+    // display_screen(&main_screen);
+    // int dir_position = get_dir_from_screen(&main_screen,"Documents");
+    // //read file
+    // read_file(&main_screen,&main_screen.dirs[dir_position],"hello.txt");
+    // read_file(&main_screen,NULL,"image.jpg");
+    // read_file(&main_screen,NULL,"notes.txt");
 }
