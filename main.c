@@ -294,7 +294,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
             fgets(contents,FILE_SIZE_MAX,stdin);
             int target_dir_position  = get_dir_from_screen(screen, arg );
             struct Directory *target_dir = &screen->dirs[target_dir_position];
-            struct File *file = get_file_from_dir(target_dir,arg);
+            struct File *file = get_file_from_dir(target_dir,target);
             write_file_contents(file,contents);
         }
         if(arg!= NULL && target == NULL) {
@@ -329,9 +329,9 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      */
     if(strcmp(cmd,"cat") == 0) {
         if(arg!=NULL && target == NULL) {
-            int file_position = get_file_from_screen(screen,arg);
-            struct File *file = screen->files[file_position];
-            print_file_content(file);
+            // int file_position = get_file_from_screen(screen,arg);
+            // struct File *file = screen->files[file_position];
+            read_file(screen,NULL,arg);
         }
     }
 
