@@ -173,6 +173,9 @@ void display_screen(struct Main_Screen *screen) {
     printf("----------------------\n\n");
 }
 
+/*
+ * print file's content
+ */
 void print_file_content(struct File *file) {
     printf("\n====📄 FILE: %s =====\n", file->name);
     printf("Created: %s\n", file->createTime);
@@ -218,8 +221,6 @@ struct Directory *get_dir_from_screen_by_filename(struct Main_Screen *screen, ch
 
 }
 
-
-
 /*
  * read the file from the screen by file name in any of directory
  * if there is no target directory in the screen
@@ -247,6 +248,20 @@ void read_file(struct Main_Screen *screen, struct Directory *directory,  char *f
 }
 
 
+void execute_by_command(char *command, struct Main_Screen *screen) {
+    char *cmd = strtok(command, " \n");
+    char *arg = strtok(NULL, " \n");
+
+    if(strcmp(cmd, "mkdir")) {
+        if(arg != NULL) {
+            make_dir_to_screen(screen,arg);
+        }else {
+            printf("Need to write File name");
+        }
+    }
+
+    
+}
 
 
 int main(void) {
@@ -268,6 +283,7 @@ int main(void) {
     // print
     display_screen(&main_screen);
     int dir_position = get_dir_from_screen(&main_screen,"Documents");
+    //read file
     read_file(&main_screen,&main_screen.dirs[dir_position],"hello.txt");
     read_file(&main_screen,NULL,"image.jpg");
     read_file(&main_screen,NULL,"notes.txt");
