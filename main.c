@@ -302,8 +302,41 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
             write_file_contents(file,contents);
         }
     }
+    /*
+     *  mv file_name to_dir_name
+     */
+    if(strcmp(cmd, "mv")) {
+        if(arg!=NULL && target != NULL) {
+            move_file_to_dir(screen,target,arg);
+        }
+    }
 
+    /*
+     *  ls
+     *  only one arg
+     */
+    if(strcmp(cmd,"ls")) {
+        if(arg!=NULL && target != NULL) {
+            display_screen(screen);
+        }
+    }
+    /*
+     * cat file_name
+     */
+    if(strcmp(cmd,"cat")) {
+        if(arg!=NULL && target == NULL) {
+            int file_position = get_file_from_screen(screen,arg);
+            struct File *file = screen->files[file_position];
+            print_file_content(file);
+        }
+    }
 
+    if(strcmp(cmd,"exit")) {
+        if(arg == NULL && target == NULL) {
+            printf("Good Bye");
+            exit(0);
+        }
+    }
 }
 
 
