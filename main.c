@@ -181,9 +181,26 @@ void print_file_content(struct File *file) {
     printf("=============================\n\n");
 }
 
+/*
+ * search by file name in the directory
+ * if it find return file
+ * or return NULL
+ */
+struct File *get_file_from_dir(struct Directory *dir, char *file_name) {
+    struct Directory target_dir = *dir;
+    int dir_file_limit = target_dir.file_count;
+    for(int i = 0; i < dir_file_limit; i++) {
+        if(strcmp(target_dir.files[i]->name, file_name) == 0) {
+            return target_dir.files[i];
+        }
+    }
+    return NULL;
+}
+
 void read_file_from_screen(struct Main_Screen *screen, char *file_name) {
 
 }
+
 /*
  * read file's contents that in the directory
  * if user don't insert directory then search from the screen
@@ -192,13 +209,7 @@ void read_file(struct Main_Screen *screen, struct Directory *directory,  char *f
     if(directory == NULL) {
         return read_file_from_screen(screen, file_name);
     }
-    struct Directory target_dir = *directory;
-    int dir_file_limit = target_dir.file_count;
-    for(int i = 0; i < dir_file_limit; i++) {
-        if(strcmp(target_dir.files[i]->name, file_name) == 0) {
-            return print_file_content(target_dir.files[i]);
-        }
-    }
+    return print_file_content(get_file_from_dir(directory, file_name));
 }
 
 
