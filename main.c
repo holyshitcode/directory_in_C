@@ -197,8 +197,33 @@ struct File *get_file_from_dir(struct Directory *dir, char *file_name) {
     return NULL;
 }
 
-void read_file_from_screen(struct Main_Screen *screen, char *file_name) {
+/*
+ * search directory from the screen by filename
+ * if it exists return found directory
+ * or return NULL
+ */
+struct Directory *get_dir_from_screen_by_filename(struct Main_Screen *screen, char *file_name) {
+    struct Main_Screen target_screen = *screen;
+    int dir_limit = target_screen.dir_count;
+    for(int i = 0; i < dir_limit; i++) {
+        struct Directory *current_dir = &target_screen.dirs[i];
+        int current_dir_file_limit = current_dir->file_count;
+        for(int j = 0; j < current_dir_file_limit; j++) {
+            if(strcmp(current_dir->files[j]->name, file_name) == 0) {
+                return current_dir;
+            }
+        }
+    }
+    return NULL;
 
+}
+
+/*
+ * read the file from the screen by file name in any of directory
+ */
+void read_file_from_screen(struct Main_Screen *screen, char *file_name) {
+    struct Directory *target_dir = get_dir_from_screen_by_filename(screen, file_name);
+    print_file_content(get_file_from_dir(target_dir, file_name));
 }
 
 /*
@@ -235,4 +260,5 @@ int main(void) {
     display_screen(&main_screen);
     int dir_position = get_dir_from_screen(&main_screen,"Documents");
     read_file(&main_screen,&main_screen.dirs[dir_position],"hello.txt");
+    read_file(&main_screen,NULL,"image.jpg");
 }
