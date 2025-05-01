@@ -402,19 +402,28 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
             exit(0);
         }
     }
+
+    /*
+     *  rm file_name
+     */
+    if(strcmp(cmd,"rm") == 0) {
+        if(arg != NULL && target == NULL) {
+            remove_file_from_screen(screen,arg);
+        }
+    }
 }
 
 
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
-    make_dir_to_screen(&main_screen, "Documents");
-    make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
-    make_file_to_screen(&main_screen, "hello.txt2", "Hello World!");
-    move_file_to_dir(&main_screen, "Documents", "hello.txt2");
-    remove_file_from_screen(&main_screen, "hello.txt");
-    make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
-    move_file_to_dir(&main_screen, "Documents", "hello.txt");
-    remove_file_from_screen(&main_screen, "hello.txt");
+    // make_dir_to_screen(&main_screen, "Documents");
+    // make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
+    // make_file_to_screen(&main_screen, "hello.txt2", "Hello World!");
+    // move_file_to_dir(&main_screen, "Documents", "hello.txt2");
+    // remove_file_from_screen(&main_screen, "hello.txt");
+    // make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
+    // move_file_to_dir(&main_screen, "Documents", "hello.txt");
+    // remove_file_from_screen(&main_screen, "hello.txt");
     while(1) {
         char command[100];
         printf("> ");
