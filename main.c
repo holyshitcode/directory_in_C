@@ -173,6 +173,36 @@ void display_screen(struct Main_Screen *screen) {
     printf("----------------------\n\n");
 }
 
+void print_file_content(struct File *file) {
+    printf("\n===== FILE: %s =====\n", file->name);
+    printf("Created: %s\n", file->createTime);
+    printf("-----------------------------\n");
+    printf("%s\n", file->contents);
+    printf("=============================\n\n");
+}
+
+void read_file_from_screen(struct Main_Screen *screen, char *file_name) {
+
+}
+/*
+ * read file's contents that in the directory
+ * if user don't insert directory then search from the screen
+ */
+void read_file(struct Main_Screen *screen, struct Directory *directory,  char *file_name) {
+    if(directory == NULL) {
+        return read_file_from_screen(screen, file_name);
+    }
+    struct Directory target_dir = *directory;
+    int dir_file_limit = target_dir.file_count;
+    for(int i = 0; i < dir_file_limit; i++) {
+        if(strcmp(target_dir.files[i]->name, file_name) == 0) {
+            return print_file_content(target_dir.files[i]);
+        }
+    }
+}
+
+
+
 
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
@@ -192,4 +222,6 @@ int main(void) {
 
     // print
     display_screen(&main_screen);
+    int dir_position = get_dir_from_screen(&main_screen,"Documents");
+    read_file(&main_screen,&main_screen.dirs[dir_position],"hello.txt");
 }
