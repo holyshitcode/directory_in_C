@@ -247,11 +247,22 @@ void read_file(struct Main_Screen *screen, struct Directory *directory,  char *f
     return print_file_content(get_file_from_dir(directory, file_name));
 }
 
+/*
+ * write contents into the file
+ */
+int write_file_contents(struct File *file, char *contents) {
+    strcpy(file->contents, contents);
+    return 0;
+}
 
 void execute_by_command(char *command, struct Main_Screen *screen) {
     char *cmd = strtok(command, " \n");
     char *arg = strtok(NULL, " \n");
+    char *target =strtok(NULL, " \n");
 
+    /*
+     * mkdir dir_name
+     */
     if(strcmp(cmd, "mkdir")) {
         if(arg != NULL) {
             make_dir_to_screen(screen,arg);
@@ -260,7 +271,39 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
         }
     }
 
-    
+    /*
+     * touch file_name
+     */
+    if(strcmp(cmd, "touch")) {
+        if(arg != NULL) {
+            make_file_to_screen(screen,arg,NULL);
+        }else {
+            printf("Need to write File name");
+        }
+    }
+    /*
+     * vim file_name
+     * vim dir_name file_name
+     */
+    if(strcmp(cmd, "vim")) {
+        if(arg != NULL && target != NULL) {
+            char *contents =NULL;
+            fgets(contents,FILE_SIZE_MAX,stdin);
+            int target_dir_position  = get_dir_from_screen(screen, arg );
+            struct Directory *target_dir = &screen->dirs[target_dir_position];
+            struct File *file = get_file_from_dir(target_dir,arg);
+            write_file_contents(file,contents);
+        }
+        if(arg!= NULL && target == NULL) {
+            char *contents =NULL;
+            fgets(contents,FILE_SIZE_MAX,stdin);
+            int screen_file_position = get_file_from_screen(screen,arg);
+            struct File *file = screen->files[screen_file_position];
+            write_file_contents(file,contents);
+        }
+    }
+
+
 }
 
 
