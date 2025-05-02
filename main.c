@@ -416,14 +416,6 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
 
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
-    // make_dir_to_screen(&main_screen, "Documents");
-    // make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
-    // make_file_to_screen(&main_screen, "hello.txt2", "Hello World!");
-    // move_file_to_dir(&main_screen, "Documents", "hello.txt2");
-    // remove_file_from_screen(&main_screen, "hello.txt");
-    // make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
-    // move_file_to_dir(&main_screen, "Documents", "hello.txt");
-    // remove_file_from_screen(&main_screen, "hello.txt");
     while(1) {
         char command[100];
         printf("> ");
@@ -432,24 +424,5 @@ int main(void) {
         command[strlen(command) - 1] = '\0';
         execute_by_command(command, &main_screen);
     }
-    // // directory
-    // make_dir_to_screen(&main_screen, "Documents");
-    // make_dir_to_screen(&main_screen, "Images");
-    //
-    // // file
-    // make_file_to_screen(&main_screen, "hello.txt", "Hello World!");
-    // make_file_to_screen(&main_screen, "image.jpg", "FAKE_IMAGE_DATA");
-    // make_file_to_screen(&main_screen, "notes.txt", "Important notes here.");
-    //
-    // // file move
-    // move_file_to_dir(&main_screen, "Documents", "hello.txt");
-    // move_file_to_dir(&main_screen, "Images", "image.jpg");
-    //
-    // // print
-    // display_screen(&main_screen);
-    // int dir_position = get_dir_from_screen(&main_screen,"Documents");
-    // //read file
-    // read_file(&main_screen,&main_screen.dirs[dir_position],"hello.txt");
-    // read_file(&main_screen,NULL,"image.jpg");
-    // read_file(&main_screen,NULL,"notes.txt");
+
 }
