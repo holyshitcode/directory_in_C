@@ -453,6 +453,9 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
         help_command();
     }
 
+    /*
+     * rmdir dir_name
+     */
     if(strcmp(cmd,"rmdir") == 0) {
         if(arg != NULL && target == NULL) {
             remove_directory_from_screen(screen,arg);
