@@ -462,16 +462,6 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
 
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
-    make_dir_to_screen(&main_screen,"test");
-    make_dir_to_screen(&main_screen,"test2");
-    make_dir_to_screen(&main_screen,"test3");
-    make_file_to_screen(&main_screen,"test_file1","1234");
-    make_file_to_screen(&main_screen,"test_file2","1234");
-    make_file_to_screen(&main_screen,"test_file3","1234");
-    move_file_to_dir(&main_screen,"test","test_file1");
-    move_file_to_dir(&main_screen,"test","test_file2");
-    move_file_to_dir(&main_screen,"test","test_file3");
-    remove_directory_from_screen(&main_screen,"test");
 
     while(1) {
         char command[100];
