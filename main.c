@@ -255,6 +255,24 @@ int remove_file_from_screen_directory(struct Directory *target_dir, char *file_n
     return 0;
 }
 
+int remove_directory_from_screen(struct Main_Screen *screen, char *dir_name) {
+    int remove_dir_position = get_dir_from_screen(screen,dir_name);
+    if (remove_dir_position == -1) {
+        return -1;
+    }
+    struct Directory *current_dir = &screen->dirs[remove_dir_position];
+    for (int j = 0; j < current_dir->file_count; j++) {
+        free(current_dir->files[j]);
+        max_usage += strlen(current_dir->files[j]->contents);
+    }
+    for(int i = remove_dir_position; i < screen->dir_count - 1; i++) {
+        screen->dirs[i] = screen->dirs[i + 1];
+    }
+    screen->dir_count--;
+    max_usage += DIR_USAGE;
+    return 0;
+}
+
 /*
  * remove from the screen if it exists in screen then
  * remove it from this function
@@ -318,6 +336,9 @@ int write_file_contents(struct File *file, char *contents) {
     return 0;
 }
 
+/*
+ * explain commands
+ */
 void help_command() {
     printf("\n--- Command Help ---\n");
     printf("This Program has mkdir, touch, vim, mv, cat, rm, ls, exit\n");
@@ -433,6 +454,17 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
 
 int main(void) {
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
+    make_dir_to_screen(&main_screen,"test");
+    make_dir_to_screen(&main_screen,"test2");
+    make_dir_to_screen(&main_screen,"test3");
+    make_file_to_screen(&main_screen,"test_file1","1234");
+    make_file_to_screen(&main_screen,"test_file2","1234");
+    make_file_to_screen(&main_screen,"test_file3","1234");
+    move_file_to_dir(&main_screen,"test","test_file1");
+    move_file_to_dir(&main_screen,"test","test_file2");
+    move_file_to_dir(&main_screen,"test","test_file3");
+    remove_directory_from_screen(&main_screen,"test");
+
     while(1) {
         char command[100];
         printf("> ");
