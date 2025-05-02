@@ -318,6 +318,19 @@ int write_file_contents(struct File *file, char *contents) {
     return 0;
 }
 
+void help_command() {
+    printf("\n--- Command Help ---\n");
+    printf("This Program has mkdir, touch, vim, mv, cat, rm, ls, exit\n");
+    printf("mkdir dir_name\n");
+    printf("touch file_name\n");
+    printf("vim file_name\n");
+    printf("if file exists in directory vim dir_name file_name\n");
+    printf("mv file_name to_dir_name\n");
+    printf("cat file_name\n");
+    printf("rm file_name\n");
+
+}
+
 void execute_by_command(char *command, struct Main_Screen *screen) {
     char *cmd = strtok(command, " \n");
     char *arg = strtok(NULL, " \n");
@@ -410,6 +423,10 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
         if(arg != NULL && target == NULL) {
             remove_file_from_screen(screen,arg);
         }
+    }
+
+    if(strcmp(cmd,"help") == 0) {
+        help_command();
     }
 }
 
