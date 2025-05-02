@@ -68,6 +68,7 @@ int make_file_to_screen(struct Main_Screen *screen, char *file_name, char *conte
 
     struct File *file = malloc(sizeof(struct File));
     strcpy(file->name, file_name);
+    strcpy(file->contents, "");
     if(contents != NULL) {
         strcpy(file->contents, contents);
     }
