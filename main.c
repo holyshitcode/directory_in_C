@@ -349,6 +349,8 @@ void help_command() {
     printf("mv file_name to_dir_name\n");
     printf("cat file_name\n");
     printf("rm file_name\n");
+    printf("rmdir dir_name\n");
+
 
 }
 
@@ -448,6 +450,12 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
 
     if(strcmp(cmd,"help") == 0) {
         help_command();
+    }
+
+    if(strcmp(cmd,"rmdir") == 0) {
+        if(arg != NULL && target == NULL) {
+            remove_directory_from_screen(screen,arg);
+        }
     }
 }
 
