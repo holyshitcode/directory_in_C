@@ -368,6 +368,9 @@ void help_command() {
 
 void execute_by_command(char *command, struct Main_Screen *screen) {
     char *cmd = strtok(command, " \n");
+    if (cmd == NULL) {
+        return;
+    }
     char *arg = strtok(NULL, " \n");
     char *target =strtok(NULL, " \n");
     bool is_correct = false;
@@ -451,7 +454,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
             if(move_file_to_dir(screen,target,arg) == 0) {
                 printf("[SYSTEM]  file name=%s moved into directory name=%s\n",arg,target);
             }else {
-                printf("[SYSTEM]  move failed check command");
+                printf("[SYSTEM]  move failed check command\n");
             }
         }
     }
