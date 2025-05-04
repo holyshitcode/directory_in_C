@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,7 +46,7 @@ char* get_current_time();
  *  if it success return 0
  */
 int make_dir_to_screen(struct Main_Screen *screen, char *dir_name) {
-    if(max_usage <= 0) {
+    if(max_usage <= 0 || dir_name == NULL) {
         return -1;
     }
     struct Directory dir;
@@ -311,6 +312,7 @@ int remove_file_from_screen(struct Main_Screen *screen, char *file_name) {
 void read_file_from_screen(struct Main_Screen *screen, char *file_name) {
     struct Directory *target_dir = get_dir_from_screen_by_filename(screen, file_name);
     if (target_dir == NULL) {
+
         int target_file_position = get_file_from_screen(screen, file_name);
         struct File *file = screen->files[target_file_position];
         return print_file_content(file);
@@ -359,13 +361,19 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     char *cmd = strtok(command, " \n");
     char *arg = strtok(NULL, " \n");
     char *target =strtok(NULL, " \n");
+    bool is_correct = false;
 
     /*
      * mkdir dir_name
      */
     if(strcmp(cmd, "mkdir") == 0) {
+        is_correct = true;
         if(arg != NULL) {
-            make_dir_to_screen(screen,arg);
+            if(make_dir_to_screen(screen,arg) == 0) {
+                printf("[SYSTEM] directory name='%s' created\n", arg);
+            }else {
+                printf("[SYSTEM] max usage overflowed remaining:%d\n",max_usage );
+            }
         }else {
             printf("Need to write File name");
         }
@@ -375,6 +383,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      * touch file_name
      */
     if(strcmp(cmd, "touch") == 0) {
+        is_correct = true;
         if(arg != NULL) {
             make_file_to_screen(screen,arg,NULL);
         }else {
@@ -386,6 +395,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      * vim dir_name file_name
      */
     if(strcmp(cmd, "vim") == 0) {
+        is_correct = true;
         if(arg != NULL && target != NULL) {
             char contents[FILE_SIZE_MAX];
             printf("Please write contents:");
@@ -408,6 +418,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      *  mv file_name to_dir_name
      */
     if(strcmp(cmd, "mv") == 0) {
+        is_correct = true;
         if(arg!=NULL && target != NULL) {
             move_file_to_dir(screen,target,arg);
         }
@@ -418,6 +429,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      *  only one arg
      */
     if(strcmp(cmd,"ls") == 0) {
+        is_correct = true;
         if(arg == NULL && target == NULL) {
             display_screen(screen);
         }
@@ -426,6 +438,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      * cat file_name
      */
     if(strcmp(cmd,"cat") == 0) {
+        is_correct = true;
         if(arg!=NULL && target == NULL) {
             // int file_position = get_file_from_screen(screen,arg);
             // struct File *file = screen->files[file_position];
@@ -434,6 +447,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     }
 
     if(strcmp(cmd,"exit") == 0) {
+        is_correct = true;
         if(arg == NULL && target == NULL) {
             printf("Good Bye");
             exit(0);
@@ -444,12 +458,14 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      *  rm file_name
      */
     if(strcmp(cmd,"rm") == 0) {
+        is_correct = true;
         if(arg != NULL && target == NULL) {
             remove_file_from_screen(screen,arg);
         }
     }
 
     if(strcmp(cmd,"help") == 0) {
+        is_correct = true;
         help_command();
     }
 
@@ -457,10 +473,16 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
      * rmdir dir_name
      */
     if(strcmp(cmd,"rmdir") == 0) {
+        is_correct = true;
         if(arg != NULL && target == NULL) {
             remove_directory_from_screen(screen,arg);
         }
     }
+    if(!is_correct) {
+        printf("\a[SYSTEM] not found command\n");
+    }
+
+
 }
 
 
