@@ -335,6 +335,12 @@ void read_file(struct Main_Screen *screen, struct Directory *directory,  char *f
  * write contents into the file
  */
 int write_file_contents(struct File *file, char *contents) {
+    if(strlen(file->contents) == 0) {
+        max_usage -= strlen(contents);
+    }else {
+        max_usage += strlen(file->contents);
+        max_usage -= strlen(contents);
+    }
     strcpy(file->contents, contents);
     return 0;
 }
@@ -375,7 +381,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
                 printf("[SYSTEM] max usage overflowed remaining:%d\n",max_usage );
             }
         }else {
-            printf("Need to write File name");
+            printf("[SYSTEM] need to write file name\n");
         }
     }
 
@@ -385,9 +391,13 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     if(strcmp(cmd, "touch") == 0) {
         is_correct = true;
         if(arg != NULL) {
-            make_file_to_screen(screen,arg,NULL);
+            if(make_file_to_screen(screen,arg,NULL) == 0) {
+                printf("[SYSTEM] file name='%s' created\n", arg);
+            }else {
+                printf("[SYSTEM] max usage overflowed remaining:%d\n",max_usage );
+            }
         }else {
-            printf("Need to write File name");
+            printf("[SYSTEM] need to write file name\n");
         }
     }
     /*
@@ -398,20 +408,35 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
         is_correct = true;
         if(arg != NULL && target != NULL) {
             char contents[FILE_SIZE_MAX];
-            printf("Please write contents:");
-            fgets(contents,FILE_SIZE_MAX,stdin);
             int target_dir_position  = get_dir_from_screen(screen, arg );
+            if(target_dir_position == -1) {
+                printf("[SYSTEM] directory name=%s not found\n", arg);
+                return;
+            }
             struct Directory *target_dir = &screen->dirs[target_dir_position];
             struct File *file = get_file_from_dir(target_dir,target);
+            if(file == NULL) {
+                printf("[SYSTEM] file name=%s in directory name=%s not found\n",target, arg);
+                return;
+            }
+            printf("Please write contents:");
+            fgets(contents,FILE_SIZE_MAX,stdin);
             write_file_contents(file,contents);
+            printf("[SYSTEM] file name =%s contents wrote\n",arg);
+
         }
         if(arg!= NULL && target == NULL) {
             char contents[FILE_SIZE_MAX] ;
+            int screen_file_position = get_file_from_screen(screen,arg);
+            if(screen_file_position == -1) {
+                printf("[SYSTEM] file name=%s not found\n", arg);
+                return;
+            }
+            struct File *file = screen->files[screen_file_position];
             printf("Please write contents:");
             fgets(contents,FILE_SIZE_MAX,stdin);
-            int screen_file_position = get_file_from_screen(screen,arg);
-            struct File *file = screen->files[screen_file_position];
             write_file_contents(file,contents);
+            printf("[SYSTEM] file name =%s contents wrote\n",arg);
         }
     }
     /*
