@@ -312,8 +312,11 @@ int remove_file_from_screen(struct Main_Screen *screen, char *file_name) {
 void read_file_from_screen(struct Main_Screen *screen, char *file_name) {
     struct Directory *target_dir = get_dir_from_screen_by_filename(screen, file_name);
     if (target_dir == NULL) {
-
         int target_file_position = get_file_from_screen(screen, file_name);
+        if (target_file_position == -1) {
+            printf("[SYSTEM] File not found\n");
+            return;
+        }
         struct File *file = screen->files[target_file_position];
         return print_file_content(file);
     }
@@ -419,7 +422,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
                 printf("[SYSTEM] file name=%s in directory name=%s not found\n",target, arg);
                 return;
             }
-            printf("Please write contents:");
+            printf("[SYSTEM]  write contents:");
             fgets(contents,FILE_SIZE_MAX,stdin);
             write_file_contents(file,contents);
             printf("[SYSTEM] file name =%s contents wrote\n",arg);
@@ -433,7 +436,7 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
                 return;
             }
             struct File *file = screen->files[screen_file_position];
-            printf("Please write contents:");
+            printf("[SYSTEM]  write contents:");
             fgets(contents,FILE_SIZE_MAX,stdin);
             write_file_contents(file,contents);
             printf("[SYSTEM] file name =%s contents wrote\n",arg);
@@ -445,7 +448,11 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     if(strcmp(cmd, "mv") == 0) {
         is_correct = true;
         if(arg!=NULL && target != NULL) {
-            move_file_to_dir(screen,target,arg);
+            if(move_file_to_dir(screen,target,arg) == 0) {
+                printf("[SYSTEM]  file name=%s moved into directory name=%s\n",arg,target);
+            }else {
+                printf("[SYSTEM]  move failed check command");
+            }
         }
     }
 
@@ -465,8 +472,6 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     if(strcmp(cmd,"cat") == 0) {
         is_correct = true;
         if(arg!=NULL && target == NULL) {
-            // int file_position = get_file_from_screen(screen,arg);
-            // struct File *file = screen->files[file_position];
             read_file(screen,NULL,arg);
         }
     }
@@ -485,7 +490,11 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     if(strcmp(cmd,"rm") == 0) {
         is_correct = true;
         if(arg != NULL && target == NULL) {
-            remove_file_from_screen(screen,arg);
+           if( remove_file_from_screen(screen,arg) == 0) {
+               printf("[SYSTEM] file name=%s removed\n", arg);
+           }else {
+               printf("[SYSTEM] remove failed check command\n");
+           }
         }
     }
 
@@ -500,7 +509,11 @@ void execute_by_command(char *command, struct Main_Screen *screen) {
     if(strcmp(cmd,"rmdir") == 0) {
         is_correct = true;
         if(arg != NULL && target == NULL) {
-            remove_directory_from_screen(screen,arg);
+            if(remove_directory_from_screen(screen,arg) == 0) {
+                printf("[SYSTEM] directory name=%s removed\n", arg);
+            }else {
+                printf("[SYSTEM] remove failed check command\n");
+            }
         }
     }
     if(!is_correct) {
