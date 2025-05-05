@@ -5,8 +5,9 @@
 #include "test_main.h"
 
 int main(void) {
-    total_test();
-    system("clear");
+    if(!total_test()) {
+        exit(1);
+    }
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
 
     while(1) {
