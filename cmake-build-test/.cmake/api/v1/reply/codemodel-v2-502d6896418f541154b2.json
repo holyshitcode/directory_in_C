@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.29"
@@ -19,7 +19,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "dir_in_c::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-dir_in_c-Debug-c546607ebd2b9b973f57.json",
+					"jsonFile" : "target-dir_in_c-6d4e9d1f3995f7a90a49.json",
 					"name" : "dir_in_c",
 					"projectIndex" : 0
 				}
@@ -49,7 +49,7 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/junyeong/maindir/dir_in_c/cmake-build-debug",
+		"build" : "/Users/junyeong/maindir/dir_in_c/cmake-build-test",
 		"source" : "/Users/junyeong/maindir/dir_in_c"
 	},
 	"version" : 

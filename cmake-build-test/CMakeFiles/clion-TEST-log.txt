@@ -1,0 +1,4 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -DTEST_BUILD=ON -G Ninja -S /Users/junyeong/maindir/dir_in_c -B /Users/junyeong/maindir/dir_in_c/cmake-build-test
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/junyeong/maindir/dir_in_c/cmake-build-test

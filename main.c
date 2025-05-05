@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "dir_in_c.h"
+#include "test_main.h"
 
 int main(void) {
+    total_test();
+    system("clear");
     struct Main_Screen main_screen = { .file_count = 0, .dir_count = 0 };
 
     while(1) {

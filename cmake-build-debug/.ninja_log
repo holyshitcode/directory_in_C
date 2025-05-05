@@ -1,14 +1,12 @@
 # ninja log v6
-1	22	1746426546401221409	CMakeFiles/main.c.dir/main.c.o	6ba7e2105019173c
-0	24	1746426466471530948	CMakeFiles/dir_in_c.dir/main.c.o	ac0de295c0b4b56c
-0	30	1746426520541439705	CMakeFiles/main.c.dir/dir_in_c.c.o	12ce289b02764444
-1	38	1746426614597818356	build.ninja	9f76904c51218d09
-1	31	1746426466471962535	CMakeFiles/dir_in_c.dir/dir_in_c.c.o	1b95582027091ae3
 0	30	1746426520541242661	CMakeFiles/main.c.dir/c_unit.c.o	d4daf3157dbe3999
-2	84	1746426448528796606	CMakeFiles/dir_in_c.dir/c_unit.c.o	ddab2f80fc182e5e
-1	24	1746426617497969324	CMakeFiles/dir_in_c.dir/main.c.o	ac0de295c0b4b56c
-1	27	1746426617498205701	CMakeFiles/dir_in_c.dir/c_unit.c.o	ddab2f80fc182e5e
-1	29	1746426617498317368	CMakeFiles/dir_in_c.dir/dir_in_c.c.o	1b95582027091ae3
-1	29	1746426712486648615	CMakeFiles/dir_in_c.dir/main.c.o	ac0de295c0b4b56c
 2	37	1746426712486966034	CMakeFiles/dir_in_c.dir/dir_in_c.c.o	1b95582027091ae3
-37	66	1746426712522222239	dir_in_c	25c600e1fd8cd3c6
+0	45	1746441362526219538	build.ninja	9f76904c51218d09
+34	64	1746441352355866902	dir_in_c	54391c27ff283972
+1	27	1746426617498205701	CMakeFiles/dir_in_c.dir/c_unit.c.o	ddab2f80fc182e5e
+1	34	1746441352323443879	CMakeFiles/dir_in_c.dir/test_main.c.o	578b89405f1f8402
+0	30	1746426520541439705	CMakeFiles/main.c.dir/dir_in_c.c.o	12ce289b02764444
+1	31	1746441236805597673	CMakeFiles/dir_in_c.dir/main.c.o	ac0de295c0b4b56c
+1	22	1746426546401221409	CMakeFiles/main.c.dir/main.c.o	6ba7e2105019173c
+1	31	1746441413782625103	CMakeFiles/dir_in_c.dir/main.c.o	ac0de295c0b4b56c
+31	61	1746441413812192814	dir_in_c	54391c27ff283972

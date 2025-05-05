@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: dir_in_c
-# Configurations: Debug
+# Configurations: 
 # =============================================================================
 
 #############################################
@@ -20,11 +20,6 @@
 
 ninja_required_version = 1.5
 
-
-#############################################
-# Set configuration variable for custom commands.
-
-CONFIGURATION = Debug
 # =============================================================================
 # Include auxiliary files.
 
@@ -39,7 +34,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /Users/junyeong/maindir/dir_in_c/cmake-build-debug/
+cmake_ninja_workdir = /Users/junyeong/maindir/dir_in_c/cmake-build-test/
 # =============================================================================
 # Object build statements for EXECUTABLE target dir_in_c
 
@@ -49,27 +44,27 @@ cmake_ninja_workdir = /Users/junyeong/maindir/dir_in_c/cmake-build-debug/
 
 build cmake_object_order_depends_target_dir_in_c: phony || .
 
-build CMakeFiles/dir_in_c.dir/main.c.o: C_COMPILER__dir_in_c_unscanned_Debug /Users/junyeong/maindir/dir_in_c/main.c || cmake_object_order_depends_target_dir_in_c
+build CMakeFiles/dir_in_c.dir/main.c.o: C_COMPILER__dir_in_c_unscanned_ /Users/junyeong/maindir/dir_in_c/main.c || cmake_object_order_depends_target_dir_in_c
   DEP_FILE = CMakeFiles/dir_in_c.dir/main.c.o.d
-  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
+  FLAGS = -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/dir_in_c.dir
   OBJECT_FILE_DIR = CMakeFiles/dir_in_c.dir
 
-build CMakeFiles/dir_in_c.dir/dir_in_c.c.o: C_COMPILER__dir_in_c_unscanned_Debug /Users/junyeong/maindir/dir_in_c/dir_in_c.c || cmake_object_order_depends_target_dir_in_c
+build CMakeFiles/dir_in_c.dir/dir_in_c.c.o: C_COMPILER__dir_in_c_unscanned_ /Users/junyeong/maindir/dir_in_c/dir_in_c.c || cmake_object_order_depends_target_dir_in_c
   DEP_FILE = CMakeFiles/dir_in_c.dir/dir_in_c.c.o.d
-  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
+  FLAGS = -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/dir_in_c.dir
   OBJECT_FILE_DIR = CMakeFiles/dir_in_c.dir
 
-build CMakeFiles/dir_in_c.dir/c_unit.c.o: C_COMPILER__dir_in_c_unscanned_Debug /Users/junyeong/maindir/dir_in_c/c_unit.c || cmake_object_order_depends_target_dir_in_c
+build CMakeFiles/dir_in_c.dir/c_unit.c.o: C_COMPILER__dir_in_c_unscanned_ /Users/junyeong/maindir/dir_in_c/c_unit.c || cmake_object_order_depends_target_dir_in_c
   DEP_FILE = CMakeFiles/dir_in_c.dir/c_unit.c.o.d
-  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
+  FLAGS = -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/dir_in_c.dir
   OBJECT_FILE_DIR = CMakeFiles/dir_in_c.dir
 
-build CMakeFiles/dir_in_c.dir/test_main.c.o: C_COMPILER__dir_in_c_unscanned_Debug /Users/junyeong/maindir/dir_in_c/test_main.c || cmake_object_order_depends_target_dir_in_c
+build CMakeFiles/dir_in_c.dir/test_main.c.o: C_COMPILER__dir_in_c_unscanned_ /Users/junyeong/maindir/dir_in_c/test_main.c || cmake_object_order_depends_target_dir_in_c
   DEP_FILE = CMakeFiles/dir_in_c.dir/test_main.c.o.d
-  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
+  FLAGS = -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/dir_in_c.dir
   OBJECT_FILE_DIR = CMakeFiles/dir_in_c.dir
 
@@ -81,8 +76,8 @@ build CMakeFiles/dir_in_c.dir/test_main.c.o: C_COMPILER__dir_in_c_unscanned_Debu
 #############################################
 # Link the executable dir_in_c
 
-build dir_in_c: C_EXECUTABLE_LINKER__dir_in_c_Debug CMakeFiles/dir_in_c.dir/main.c.o CMakeFiles/dir_in_c.dir/dir_in_c.c.o CMakeFiles/dir_in_c.dir/c_unit.c.o CMakeFiles/dir_in_c.dir/test_main.c.o
-  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk
+build dir_in_c: C_EXECUTABLE_LINKER__dir_in_c_ CMakeFiles/dir_in_c.dir/main.c.o CMakeFiles/dir_in_c.dir/dir_in_c.c.o CMakeFiles/dir_in_c.dir/c_unit.c.o CMakeFiles/dir_in_c.dir/test_main.c.o
+  FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk
   OBJECT_DIR = CMakeFiles/dir_in_c.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -94,7 +89,7 @@ build dir_in_c: C_EXECUTABLE_LINKER__dir_in_c_Debug CMakeFiles/dir_in_c.dir/main
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/junyeong/maindir/dir_in_c/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /Users/junyeong/maindir/dir_in_c/cmake-build-test && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -105,7 +100,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/junyeong/maindir/dir_in_c/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --regenerate-during-build -S/Users/junyeong/maindir/dir_in_c -B/Users/junyeong/maindir/dir_in_c/cmake-build-debug
+  COMMAND = cd /Users/junyeong/maindir/dir_in_c/cmake-build-test && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --regenerate-during-build -S/Users/junyeong/maindir/dir_in_c -B/Users/junyeong/maindir/dir_in_c/cmake-build-test
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -121,7 +116,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /Users/junyeong/maindir/dir_in_c/cmake-build-debug
+# Folder: /Users/junyeong/maindir/dir_in_c/cmake-build-test
 
 build all: phony dir_in_c
 
